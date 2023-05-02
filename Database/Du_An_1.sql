@@ -1,0 +1,71 @@
+﻿USE MASTER
+GO
+CREATE DATABASE ThuVien
+USE ThuVien
+GO
+
+CREATE TABLE HocSinh(
+MaHS NVARCHAR(6) NOT NULL PRIMARY KEY,
+HoTenHS NVARCHAR(50) NOT NULL,
+GioiTinh BIT DEFAULT 1,
+Lop NVARCHAR(5) NOT NULL,
+NgaySinh DATE NOT NULL,
+MatKhau NVARCHAR(6)NOT NULL
+);
+
+CREATE TABLE GiaoVien(
+MaGV NVARCHAR(6) NOT NULL PRIMARY KEY,
+HoTenGV NVARCHAR(50) NOT NULL,
+GioiTinh BIT DEFAULT 1,
+MatKhau NVARCHAR(6) NOT NULL
+);
+
+CREATE TABLE Sach(
+MaSach NVARCHAR(6) NOT NULL PRIMARY KEY,
+TenSach NVARCHAR(100) NOT NULL,
+LoaiSach NVARCHAR(20) NOT NULL,
+TacGia NVARCHAR(50) NOT NULL,
+SoLuong NVARCHAR(3) NOT NULL,
+TGNhap DATE NOT NULL
+);
+
+CREATE TABLE MuonTra(
+MaMuon NVARCHAR(10) NOT NULL PRIMARY KEY,
+MaHS NVARCHAR(6) NOT NULL,
+HoTenHS NVARCHAR(50) NOT NULL,
+Lop NVARCHAR(5) NOT NULL,
+TenSach NVARCHAR(100) NOT NULL,
+LoaiSach NVARCHAR(20) NOT NULL,
+TacGia NVARCHAR(50) NOT NULL,
+TGMuon DATE NOT NULL,
+TGTra DATE NULL
+
+FOREIGN KEY (MaHS) REFERENCES HocSinh(MaHS) ON DELETE NO ACTION ON UPDATE CASCADE
+);
+
+/*
+-- Quản lý người mượn
+INSERT INTO MuonTra(MaMuon, MaHS, HoTenHS, Lop, TenSach, LoaiSach, TacGia, TGMuon, TGTra, HoTenGV, MaSach) 
+VALUES(?,?,?,?,?,?,?,?,?,?,?)
+UPDATE MuonTra SET MaMuon=?, MaHS=?, HoTenHS=?, Lop=?, TenSach=?, LoaiSach=?, TacGia=?, TGMuon=?, TGTra=?, HoTenGV=?, MaSach=?
+DELETE FROM MuonTra WHERE MaMuon=?
+SELECT * FROM MuonTra
+SELECT * FROM MuonTra WHERE MaMuon=?
+
+-- Quản lý sách
+INSERT INTO Sach(MaSach, TenSach, LoaiSach, TacGia, SoLuong, TGNhap) 
+VALUES(?,?,?,?,?,?)
+UPDATE Sach SET MaSach=?, TenSach=?, LoaiSach=?, TacGia=?, SoLuong=?, TGNhap=?
+DELETE FROM Sach WHERE MaSach=?
+SELECT * FROM Sach
+SELECT * FROM Sach WHERE MaSach=?
+
+-- Quản lý giáo viên
+INSERT INTO GiaoVien(MaGV, HoTenGV, MatKhau) VALUES(?,?,?)
+UPDATE GiaoVien SET MaGV=?, HoTenGV=?, MatKhau=?
+
+-- Quản lý học sinh
+INSERT INTO HocSinh(MaHS, HoTenHS, Lop, NgaySinh, MatKhau) VALUES(?,?,?,?,?)
+UPDATE HocSinh SET MaHS=?, HoTenHS=?, Lop=?, NgaySinh=?, MatKhau=?
+SELECT * FROM HocSinh
+SELECT * FROM HocSinh WHERE MaHS=?
